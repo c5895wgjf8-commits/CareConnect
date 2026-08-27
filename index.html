@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CareConnect</title>
+<style>
+
+:root{--bg:#f4f8f7;--card:#fff;--ink:#17312c;--muted:#70817c;--line:#dbe7e3;--accent:#117866;--accent2:#e4f4f0;--danger:#a43b3b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:14px 4vw;backdrop-filter:blur(10px)}
+.brand{display:flex;gap:10px;align-items:center}.brand small{display:block;color:var(--muted)}.logo{width:38px;height:38px;background:var(--accent);color:#fff;border-radius:12px;display:grid;place-items:center;font-size:26px;font-weight:800}
+nav{display:flex;gap:6px;flex-wrap:wrap}nav button{border:0;background:transparent;padding:9px 11px;border-radius:10px;color:var(--ink)}
+main{max-width:1180px;margin:auto;padding:38px 22px 70px}.view{display:none}.view.active{display:block}
+.hero.active{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:45px;min-height:72vh}.eyebrow{font-size:12px;letter-spacing:.14em;font-weight:850;color:var(--accent)}
+h1{font-size:clamp(44px,7vw,76px);line-height:.98;letter-spacing:-.05em;margin:12px 0 20px}h2{font-size:36px;letter-spacing:-.03em}p{color:var(--muted);line-height:1.55}
+.hero-card,.panel,.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px}.hero-card{padding:28px;box-shadow:0 24px 70px rgba(20,48,42,.10)}
+.primary,.secondary,.danger{border:0;border-radius:12px;padding:12px 15px;font-weight:780}.primary{background:var(--accent);color:#fff}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.danger{background:#fff0f0;color:var(--danger);border:1px solid #efcaca}
+.row{display:flex;gap:9px;flex-wrap:wrap}.warning{margin-top:22px;font-size:13px;color:var(--muted)}.pill{display:inline-block;padding:6px 9px;border-radius:999px;background:var(--accent2);color:var(--accent);font-size:12px;font-weight:800;margin-right:6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.avatar{width:54px;height:54px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:850;margin-bottom:12px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}.narrow{max-width:600px;margin:auto}form{display:grid;gap:13px}label{display:grid;gap:6px;font-size:13px;font-weight:750}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}.check{display:grid;grid-template-columns:auto 1fr;align-items:flex-start;gap:8px}.check input{width:auto}
+hr{border:0;border-top:1px solid var(--line);margin:24px 0}.muted{color:var(--muted);font-size:14px}.appt{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:12px}
+.visit-layout{display:grid;grid-template-columns:1fr 340px;gap:16px}.video{min-height:500px;background:#17312c;border-radius:20px;color:#fff;display:grid;place-items:center;text-align:center;padding:30px}.video p{color:#d5e5e1}
+.note{white-space:pre-wrap;background:var(--accent2);padding:12px;border-radius:12px}.empty{text-align:center;color:var(--muted);padding:30px;border:1px dashed var(--line);border-radius:16px;background:#fff}
+#toast{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;padding:12px 15px;border-radius:12px;opacity:0;transform:translateY(8px);transition:.2s}#toast.show{opacity:1;transform:translateY(0)}
+code{background:#eef3f1;padding:2px 5px;border-radius:5px}
+@media(max-width:860px){.hero.active,.visit-layout{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.appt{align-items:flex-start;flex-direction:column}.section-head{align-items:flex-start}.hero.active{gap:24px}main{padding:28px 16px 60px}header{align-items:flex-start}nav button{font-size:13px;padding:7px}}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">+</span><div><strong>CareConnect</strong><small>Full-stack telemedicine MVP</small></div></div>
+  <nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="showDoctors()">Doctors</button>
+    <button onclick="showAppointments()">Appointments</button>
+    <button onclick="showAuth()">Account</button>
+  </nav>
+</header>
+<main>
+  <section id="home" class="view active hero">
+    <div>
+      <span class="eyebrow">VIRTUAL CARE</span>
+      <h1>Care that meets patients where they are.</h1>
+      <p>Patient and clinician accounts, appointment booking, visit records, notes, and integration-ready video/payment endpoints.</p>
+      <div class="row"><button class="primary" onclick="showDoctors()">Find a Doctor</button><button class="secondary" onclick="showAppointments()">My Appointments</button></div>
+      <div class="warning">Prototype only. Do not use this build for real protected health information or emergency care.</div>
+    </div>
+    <div class="hero-card">
+      <div class="pill">FULL-STACK MVP</div>
+      <h3>What works now</h3>
+      <ul>
+        <li>Persistent database</li>
+        <li>Patient & doctor roles</li>
+        <li>Appointments + consent</li>
+        <li>Clinician notes</li>
+        <li>Stripe/video integration endpoints</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="auth" class="view">
+    <div class="panel narrow">
+      <span class="eyebrow">ACCOUNT</span>
+      <h2>Sign in</h2>
+      <form id="loginForm">
+        <label>Email<input name="email" type="email" required placeholder="name@example.com"></label>
+        <label>Password<input name="password" type="password" required></label>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+      <hr>
+      <h3>Create account</h3>
+      <form id="registerForm">
+        <label>Full name<input name="name" required></label>
+        <label>Email<input name="email" type="email" required></label>
+        <label>Password<input name="password" type="password" minlength="8" required></label>
+        <label>Role<select name="role"><option value="patient">Patient</option><option value="doctor">Doctor</option></select></label>
+        <button class="secondary" type="submit">Create account</button>
+      </form>
+      <p class="muted">Demo doctor: marie@demo.local / demo1234</p>
+    </div>
+  </section>
+
+  <section id="doctors" class="view">
+    <div class="section-head"><div><span class="eyebrow">FIND CARE</span><h2>Doctors</h2></div></div>
+    <div id="doctorGrid" class="grid"></div>
+  </section>
+
+  <section id="booking" class="view">
+    <div class="panel narrow">
+      <span class="eyebrow">BOOK</span><h2 id="bookDoctorName"></h2>
+      <form id="bookingForm">
+        <input type="hidden" name="doctor_id" id="doctorId">
+        <label>Date<input type="date" name="appt_date" required></label>
+        <label>Time<select name="appt_time"><option>9:00 AM</option><option>10:30 AM</option><option>1:00 PM</option><option>2:30 PM</option><option>4:00 PM</option></select></label>
+        <label>Reason<textarea name="reason" rows="4" required></textarea></label>
+        <label class="check"><input type="checkbox" name="consentBox" required> I consent to a virtual-care visit and understand this is a prototype.</label>
+        <input type="hidden" name="consent" value="yes">
+        <button class="primary" type="submit">Book appointment</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="appointments" class="view">
+    <div class="section-head"><div><span class="eyebrow">PORTAL</span><h2>Appointments</h2></div></div>
+    <div id="apptList"></div>
+  </section>
+
+  <section id="visit" class="view">
+    <div class="section-head"><div><span class="eyebrow">VISIT ROOM</span><h2>Virtual visit</h2></div></div>
+    <div class="visit-layout">
+      <div class="video"><div><h2>Video integration placeholder</h2><p>This becomes the secure video room.</p></div></div>
+      <div class="panel">
+        <h3>Visit tools</h3>
+        <div id="visitInfo" class="muted"></div>
+        <button class="secondary" onclick="loadVideoRoom()">Open video room</button>
+        <div id="doctorNoteBox" style="display:none">
+          <label>Clinician note<textarea id="noteText" rows="10"></textarea></label>
+          <button class="primary" onclick="saveNote()">Save note</button>
+        </div>
+        <div id="patientNoteBox" style="display:none">
+          <h4>Visit note</h4><div id="patientNote" class="note"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="toast"></div>
+<script>
+let me=null, activeAppt=null;
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}
+async function api(url,opts={}){const r=await fetch(url,opts);let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.detail||'Request failed');return data}
+async function refreshMe(){const d=await api('/api/me');me=d.user;return me}
+async function showAuth(){await refreshMe();show('auth');if(me)toast(`Signed in as ${me.name} (${me.role})`)}
+
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();try{await api('/api/login',{method:'POST',body:new FormData(e.target)});await refreshMe();toast('Signed in');showDoctors()}catch(err){toast(err.message)}
+});
+document.getElementById('registerForm').addEventListener('submit',async e=>{
+  e.preventDefault();try{await api('/api/register',{method:'POST',body:new FormData(e.target)});await refreshMe();toast('Account created');showDoctors()}catch(err){toast(err.message)}
+});
+
+async function showDoctors(){
+  const d=await api('/api/doctors');const grid=document.getElementById('doctorGrid');
+  grid.innerHTML=d.doctors.map(x=>`<article class="card"><div class="avatar">${x.name.split(' ').slice(-1)[0][0]}</div><h3>${x.name}</h3><p>${x.specialty||'General Medicine'}</p><div class="pill">${x.verified?'Verified demo':'Pending verification'}</div><p class="muted">${x.languages||''}</p><p><strong>$${((x.visit_fee_cents||4500)/100).toFixed(2)}</strong> per visit</p><button class="primary" onclick='book(${JSON.stringify(x)})'>Book</button></article>`).join('');
+  show('doctors')
+}
+async function book(doc){
+  await refreshMe();if(!me){toast('Please sign in first');show('auth');return}
+  if(me.role!=='patient'){toast('Patient account required');return}
+  document.getElementById('doctorId').value=doc.id;document.getElementById('bookDoctorName').textContent=doc.name;show('booking')
+}
+document.getElementById('bookingForm').addEventListener('submit',async e=>{
+  e.preventDefault();try{await api('/api/appointments',{method:'POST',body:new FormData(e.target)});toast('Appointment booked');showAppointments()}catch(err){toast(err.message)}
+});
+async function showAppointments(){
+  await refreshMe();if(!me){toast('Please sign in');show('auth');return}
+  try{
+    const d=await api('/api/appointments');const list=document.getElementById('apptList');
+    if(!d.appointments.length){list.innerHTML='<div class="empty">No appointments yet.</div>'}
+    else list.innerHTML=d.appointments.map(a=>`<div class="card appt"><div><strong>${me.role==='patient'?a.doctor_name:a.patient_name}</strong><p>${a.appt_date} · ${a.appt_time}</p><p class="muted">${a.reason}</p><span class="pill">${a.status}</span>${a.paid?'<span class="pill">Paid</span>':''}</div><div class="row"><button class="primary" onclick="openVisit(${a.id})">Open Visit</button>${me.role==='patient'&&!a.paid?`<button class="secondary" onclick="startCheckout(${a.id})">Pay securely</button>`:''}<button class="danger" onclick="cancelAppt(${a.id})">Cancel</button></div></div>`).join('')
+    show('appointments')
+  }catch(err){toast(err.message)}
+}
+async function cancelAppt(id){try{await api(`/api/appointments/${id}/cancel`,{method:'POST'});toast('Cancelled');showAppointments()}catch(e){toast(e.message)}}
+async function startCheckout(id){try{const d=await api(`/api/appointments/${id}/checkout`,{method:'POST'});if(d.already_paid){toast('Already paid');showAppointments();return}if(d.url)window.location.href=d.url;else toast('Checkout unavailable')}catch(e){toast(e.message)}}
+async function openVisit(id){
+  activeAppt=id;await refreshMe();show('visit');document.getElementById('visitInfo').textContent=`Appointment #${id}`;
+  if(me.role==='doctor'){document.getElementById('doctorNoteBox').style.display='block';document.getElementById('patientNoteBox').style.display='none';const d=await api(`/api/appointments/${id}/notes`);document.getElementById('noteText').value=d.note?.note_text||''}
+  else {document.getElementById('doctorNoteBox').style.display='none';document.getElementById('patientNoteBox').style.display='block';const d=await api(`/api/appointments/${id}/notes`);document.getElementById('patientNote').textContent=d.note?.note_text||'No clinician note saved yet.'}
+}
+async function saveNote(){const fd=new FormData();fd.append('note_text',document.getElementById('noteText').value);try{await api(`/api/appointments/${activeAppt}/notes`,{method:'POST',body:fd});toast('Note saved')}catch(e){toast(e.message)}}
+async function loadVideoRoom(){try{const d=await api(`/api/appointments/${activeAppt}/video-room`);if(d.url)window.open(d.url,'_blank','noopener,noreferrer');else toast(d.message||'Video not configured')}catch(e){toast(e.message)}}
+const qp=new URLSearchParams(window.location.search);
+if(qp.get('payment')==='success'){setTimeout(()=>{toast('Payment received');showAppointments()},300)}
+if(qp.get('payment')==='cancelled'){setTimeout(()=>toast('Payment cancelled'),300)}
+</script>
+</body></html>
