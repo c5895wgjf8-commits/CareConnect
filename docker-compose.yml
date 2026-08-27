@@ -1,0 +1,9 @@
+services:
+  careconnect:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: "replace-this-with-a-long-random-secret"
+    volumes:
+      - ./app:/app/app
